@@ -6,13 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,9 +18,8 @@ import java.util.Objects;
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 })
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Article {
+public class Article extends AuditingFields {
     @Id
     @Column(name = "article_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +30,7 @@ public class Article {
     private String title;
 
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10000)
     private String content;
 
     @Setter
@@ -46,22 +39,6 @@ public class Article {
     @OrderBy("id")
     @OneToMany(mappedBy = "article")
     private List<ArticleComment> articleComments = new ArrayList<>();
-
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @CreatedBy
-    @Column(nullable = false)
-    private String createdBy;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt;
-
-    @LastModifiedBy
-    @Column(nullable = false)
-    private String modifiedBy;
 
     private Article(String title, String content, String hashtag) {
         this.title = title;
