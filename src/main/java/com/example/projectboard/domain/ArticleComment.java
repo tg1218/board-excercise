@@ -23,7 +23,7 @@ public class ArticleComment extends AuditingFields{
     private Long id;
 
     @Setter
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "article_id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Article article;
 

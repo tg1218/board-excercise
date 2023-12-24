@@ -37,7 +37,7 @@ public class Article extends AuditingFields {
     private String hashtag;
 
     @OrderBy("id")
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleComment> articleComments = new ArrayList<>();
 
     private Article(String title, String content, String hashtag) {
