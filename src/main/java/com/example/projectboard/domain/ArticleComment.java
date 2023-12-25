@@ -23,6 +23,11 @@ public class ArticleComment extends AuditingFields{
     private Long id;
 
     @Setter
+    @JoinColumn(name = "userId")
+    @ManyToOne(optional = false)
+    private UserAccount userAccount;
+
+    @Setter
     @JoinColumn(name = "article_id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Article article;
@@ -31,13 +36,14 @@ public class ArticleComment extends AuditingFields{
     @Column(nullable = false, length = 500)
     private String content;
 
-    public ArticleComment(Article article, String content) {
+    public ArticleComment(Article article, String content, UserAccount userAccount) {
         this.article = article;
         this.content = content;
+        this.userAccount = userAccount;
     }
 
     public ArticleComment of(Article article, String content) {
-        return new ArticleComment(article, content);
+        return new ArticleComment(article, content, userAccount);
     }
 
     @Override

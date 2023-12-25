@@ -25,6 +25,10 @@ public class Article extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JoinColumn(name = "userId")
+    @ManyToOne(optional = false)
+    private UserAccount userAccount;
+
     @Setter
     @Column(nullable = false)
     private String title;
@@ -45,6 +49,7 @@ public class Article extends AuditingFields {
         this.content = content;
         this.hashtag = hashtag;
     }
+
     public static Article of(String title, String content, String hashtag) {
         return new Article(title, content, hashtag);
     }

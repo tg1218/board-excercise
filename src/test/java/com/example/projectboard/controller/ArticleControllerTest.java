@@ -1,14 +1,20 @@
 package com.example.projectboard.controller;
 
 import com.example.projectboard.config.SecurityConfig;
+import com.example.projectboard.service.ArticleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -20,6 +26,9 @@ class ArticleControllerTest {
 
     private final MockMvc mvc;
 
+    @MockBean
+    private ArticleService articleService;
+
     public ArticleControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
@@ -27,17 +36,22 @@ class ArticleControllerTest {
     @Test
     @DisplayName("[veiw][GET] 게시글 리스트 - 정상 호출")
     public void givenNothing_whenRequestArticles_thenReturnArticles() throws Exception {
-        //when & then
+
+        given(articleService.searchArticles(eq(null), eq(null), any(Pageable.class))).willReturn(Page.empty());
+
         mvc.perform(get("/articles"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/index"))
                 .andExpect(model().attributeExists("articles"));
+
+        then(articleService).should().searchArticles(eq(null), eq(null), any(Pageable.class));
     }
 
     @Test
     @DisplayName("[veiw][GET] 게시글 상세 페이지 - 정상 호출")
     public void givenNothing_whenRequestArticles_thenReturnArticleSpecificViews() throws Exception {
+
         //when & then
         mvc.perform(get("/articles/1"))
                 .andExpect(status().isOk())
