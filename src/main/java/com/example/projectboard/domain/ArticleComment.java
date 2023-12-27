@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class ArticleComment extends AuditingFields{
     private Long id;
 
     @Setter
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_account_id")
     @ManyToOne(optional = false)
     private UserAccount userAccount;
 
@@ -43,6 +44,10 @@ public class ArticleComment extends AuditingFields{
     }
 
     public ArticleComment of(Article article, String content) {
+        return new ArticleComment(article, content, userAccount);
+    }
+
+    public static ArticleComment of(UserAccount userAccount, Article article, String content) {
         return new ArticleComment(article, content, userAccount);
     }
 

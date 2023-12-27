@@ -16,8 +16,12 @@ import lombok.Setter;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserAccount extends AuditingFields {
+
     @Id
-    @Column(length = 50)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 50, nullable = false)
     private String userId;
 
     @Setter

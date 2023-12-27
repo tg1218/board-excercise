@@ -1,9 +1,7 @@
 package com.example.projectboard.service;
 
-import com.example.projectboard.domain.Article;
 import com.example.projectboard.domain.constant.SearchType;
 import com.example.projectboard.dto.ArticleDto;
-import com.example.projectboard.dto.ArticleUpdateDto;
 import com.example.projectboard.repository.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @DisplayName("비즈니스 로긱 - 게시글")
 @ExtendWith(MockitoExtension.class)

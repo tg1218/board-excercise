@@ -42,7 +42,7 @@ class ArticleRepositoryTest {
         long previousCount = articleRepository.count();
 
         //when
-        articleRepository.save(Article.of("new article", "new content", "#new"));
+        articleRepository.save(Article.of(null,"new article", "new content", "#new"));
 
         //then
         assertThat(previousCount + 1).isEqualTo(1);
@@ -52,7 +52,7 @@ class ArticleRepositoryTest {
     @Test
     void givenTestData_whenUpdating_thenWorksFine() {
         // Given
-        articleRepository.save(Article.of("new article", "new content", "#new"));
+        articleRepository.save(Article.of(null,"new article", "new content", "#new"));
         Article article = articleRepository.findById(1L).orElseThrow();
 
         // When
@@ -67,7 +67,7 @@ class ArticleRepositoryTest {
     @Test
     void givenTestData_whenDeleting_thenWorksFine() {
         // Given
-        articleRepository.save(Article.of("new article", "new content", "#new"));
+        articleRepository.save(Article.of(null,"new article", "new content", "#new"));
         Article article = articleRepository.findById(1L).orElseThrow();
         long previousArticleCount = articleRepository.count();
 

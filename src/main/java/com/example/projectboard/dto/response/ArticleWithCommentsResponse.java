@@ -11,7 +11,7 @@ public record ArticleWithCommentsResponse(
         Long id,
         String title,
         String content,
-        String hashtags,
+        String hashtag,
         LocalDateTime createdAt,
         String email,
         String nickname,
