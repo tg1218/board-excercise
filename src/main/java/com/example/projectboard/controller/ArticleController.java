@@ -1,7 +1,9 @@
 package com.example.projectboard.controller;
 
+import com.example.projectboard.domain.constant.FormStatus;
 import com.example.projectboard.domain.constant.SearchType;
 import com.example.projectboard.dto.ArticleDto;
+import com.example.projectboard.dto.ArticleRequest;
 import com.example.projectboard.dto.response.ArticleResponse;
 import com.example.projectboard.dto.response.ArticleWithCommentsResponse;
 import com.example.projectboard.service.ArticleService;
@@ -71,5 +73,12 @@ public class ArticleController {
         map.addAttribute("searchType", SearchType.HASHTAG);
 
         return "articles/search-hashtag";
+    }
+
+    @GetMapping("/form")
+    public String form(ModelMap map) {
+        map.addAttribute("formStatus", FormStatus.CREATE);
+
+        return "artlces/form";
     }
 }
