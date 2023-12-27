@@ -1,9 +1,12 @@
 package com.example.projectboard.service;
 
+import com.example.projectboard.domain.Article;
 import com.example.projectboard.domain.ArticleComment;
+import com.example.projectboard.domain.UserAccount;
 import com.example.projectboard.dto.ArticleCommentDto;
 import com.example.projectboard.repository.ArticleCommentRepository;
 import com.example.projectboard.repository.ArticleRepository;
+import com.example.projectboard.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +22,7 @@ public class ArticleCommentService {
 
     private final ArticleRepository articleRepository;
     private final ArticleCommentRepository articleCommentRepository;
+    private final UserAccountRepository userAccountRepository;
 
     @Transactional(readOnly = true)
     public List<ArticleCommentDto> searchArticleComments(Long articleId) {
@@ -29,19 +33,23 @@ public class ArticleCommentService {
     }
 
     public void saveArticleComment(ArticleCommentDto dto) {
-        try{
-            articleCommentRepository.save(dto.toEntity(articleRepository.getReferenceById(dto.articleId())));
-        }
-        catch (EntityNotFoundException e){
+        try {
+            Article article = articleRepository.getReferenceById(dto.articleId());
+            UserAccount userAccount = userAccountRepository.getReferenceById(dto.userAccountDto().userId());
+
+            articleCommentRepository.save(dto.toEntity(article, userAccount));
+        } catch (EntityNotFoundException e) {
         }
     }
 
     public void updateArticleComment(ArticleCommentDto dto) {
-        try{
+        try {
             ArticleComment articleComment = articleCommentRepository.getReferenceById(dto.id());
-            if(dto.content() != null) { articleComment.setContent(dto.content()); };
-        }
-        catch (EntityNotFoundException e){
+            if (dto.content() != null) {
+                articleComment.setContent(dto.content());
+            }
+            ;
+        } catch (EntityNotFoundException e) {
         }
     }
 

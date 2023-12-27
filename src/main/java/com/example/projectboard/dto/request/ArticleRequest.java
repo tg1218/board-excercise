@@ -1,4 +1,7 @@
-package com.example.projectboard.dto;
+package com.example.projectboard.dto.request;
+
+import com.example.projectboard.dto.ArticleDto;
+import com.example.projectboard.dto.UserAccountDto;
 
 public record ArticleRequest (
     String title,

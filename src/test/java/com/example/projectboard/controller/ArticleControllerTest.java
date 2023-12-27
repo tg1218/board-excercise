@@ -4,7 +4,7 @@ import com.example.projectboard.config.SecurityConfig;
 import com.example.projectboard.domain.constant.FormStatus;
 import com.example.projectboard.domain.constant.SearchType;
 import com.example.projectboard.dto.ArticleDto;
-import com.example.projectboard.dto.ArticleRequest;
+import com.example.projectboard.dto.request.ArticleRequest;
 import com.example.projectboard.dto.ArticleWithCommentsDto;
 import com.example.projectboard.dto.UserAccountDto;
 import com.example.projectboard.service.ArticleService;
