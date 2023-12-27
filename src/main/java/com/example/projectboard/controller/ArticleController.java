@@ -4,6 +4,7 @@ import com.example.projectboard.domain.constant.FormStatus;
 import com.example.projectboard.domain.constant.SearchType;
 import com.example.projectboard.dto.ArticleDto;
 import com.example.projectboard.dto.ArticleRequest;
+import com.example.projectboard.dto.UserAccountDto;
 import com.example.projectboard.dto.response.ArticleResponse;
 import com.example.projectboard.dto.response.ArticleWithCommentsResponse;
 import com.example.projectboard.service.ArticleService;
@@ -15,10 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -79,6 +77,33 @@ public class ArticleController {
     public String form(ModelMap map) {
         map.addAttribute("formStatus", FormStatus.CREATE);
 
-        return "artlces/form";
+        return "articles/form";
+    }
+
+    @PostMapping("/form")
+    public String postNewArticle(@ModelAttribute ArticleRequest request) {
+        articleService.saveArticle(request.toDto(UserAccountDto.of(
+                "tg", "asdf1234", "tg@mail.com", "tg", "memo",
+                null, null, null, null
+        )));
+
+        return "redirect:/articles";
+    }
+
+    @PostMapping("/{articleId}/form")
+    public String postNewArticle(@PathVariable(name = "articleId") Long articleId, ArticleRequest request) {
+        articleService.updateArticle(articleId, request.toDto(UserAccountDto.of(
+                "tg", "asdf1234", "tg@mail.com", "tg", "memo",
+                null, null, null, null
+        )));
+
+        return "redirect:/articles/" + articleId;
+    }
+
+    @PostMapping("/{articleId}/delete")
+    public String deleteArticle(@PathVariable(name = "articleId") Long articleId) {
+        articleService.deleteArticle(articleId);
+
+        return "redirect:/articles";
     }
 }

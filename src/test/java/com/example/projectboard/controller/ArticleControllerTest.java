@@ -224,22 +224,22 @@ class ArticleControllerTest {
     @Test
     void givenNothing_whenRequesting_thenReturnsUpdatedArticlePage() throws Exception {
         // Given
-        long aritlceId = 1L;
+        Long articleId = 1L;
         ArticleRequest articleRequest = ArticleRequest.of("new title", "new content", "#new");
-        willDoNothing().given(articleService).updateArticle(eq(aritlceId), any(ArticleDto.class));
+        willDoNothing().given(articleService).updateArticle(eq(articleId), any(ArticleDto.class));
 
         // When & Then
         mvc.perform(
-                        post("/articles/" + aritlceId + "/form")
+                        post("/articles/" + articleId + "/form")
                                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                                 .content(encoder.encode(articleRequest))
                                 .with(csrf())
                 )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/artifacts/" + aritlceId))
-                .andExpect(redirectedUrl("/articles/" + aritlceId));
+                .andExpect(view().name("redirect:/articles/" + articleId))
+                .andExpect(redirectedUrl("/articles/" + articleId));
 
-        then(articleService).should().updateArticle(eq(aritlceId), any(ArticleDto.class));
+        then(articleService).should().updateArticle(eq(articleId), any(ArticleDto.class));
     }
 
 
