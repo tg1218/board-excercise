@@ -2,6 +2,7 @@ package com.example.projectboard.repository;
 
 import com.example.projectboard.domain.Article;
 import com.example.projectboard.domain.QArticle;
+import com.example.projectboard.repository.querydsl.ArticleRepositoryCustom;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import org.springframework.data.domain.Page;
@@ -12,11 +13,14 @@ import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.List;
+
 @RepositoryRestResource
 public interface ArticleRepository extends
         JpaRepository<Article, Long>,
         QuerydslPredicateExecutor<QArticle>,
-        QuerydslBinderCustomizer<QArticle> {
+        QuerydslBinderCustomizer<QArticle>,
+        ArticleRepositoryCustom {
     @Override
     default void customize(QuerydslBindings bindings, QArticle root){
         bindings.excludeUnlistedProperties(false);
