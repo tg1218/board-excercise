@@ -6,6 +6,7 @@ import com.example.projectboard.dto.ArticleDto;
 import com.example.projectboard.dto.ArticleUpdateDto;
 import com.example.projectboard.dto.ArticleWithCommentsDto;
 import com.example.projectboard.repository.ArticleRepository;
+import com.example.projectboard.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,20 +56,22 @@ public class ArticleService {
         try {
             Article article = articleRepository.getReferenceById(id);
 
-            if (dto.getTitle() != null) {
-                article.setTitle(dto.getTitle());
+            if (dto.getUserAccountDto().userId().equals(article.getUserAccount().getUserId())) {
+                if (dto.getTitle() != null) {
+                    article.setTitle(dto.getTitle());
+                }
+                if (dto.getContent() != null) {
+                    article.setContent(dto.getContent());
+                }
+                article.setHashtag(dto.getHashtag());
             }
-            if (dto.getContent() != null) {
-                article.setContent(dto.getContent());
-            }
-            article.setHashtag(dto.getHashtag());
         } catch (EntityNotFoundException e) {
             log.warn("not found. {}", dto);
         }
     }
 
-    public void deleteArticle(Long articleId) {
-        articleRepository.deleteById(articleId);
+    public void deleteArticle(Long articleId, String userId) {
+        articleRepository.deleteByIdAndUserAccount_UserId(articleId, userId);
     }
 
     @Transactional(readOnly = true)
