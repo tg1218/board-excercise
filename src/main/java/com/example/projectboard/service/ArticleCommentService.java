@@ -17,6 +17,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ArticleCommentService {
 
@@ -48,7 +49,6 @@ public class ArticleCommentService {
             if (dto.content() != null) {
                 articleComment.setContent(dto.content());
             }
-            ;
         } catch (EntityNotFoundException e) {
         }
     }

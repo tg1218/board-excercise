@@ -4,7 +4,8 @@ import lombok.Getter;
 
 public enum FormStatus {
     CREATE("저장", false),
-    EDIT("수정", false);
+    EDIT("수정", false),
+    UPDATE("수정", true);
 
     @Getter
     private final String description;

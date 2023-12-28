@@ -3,7 +3,6 @@ package com.example.projectboard.controller;
 import com.example.projectboard.domain.constant.FormStatus;
 import com.example.projectboard.domain.constant.SearchType;
 import com.example.projectboard.dto.request.ArticleRequest;
-import com.example.projectboard.dto.UserAccountDto;
 import com.example.projectboard.dto.response.ArticleResponse;
 import com.example.projectboard.dto.response.ArticleWithCommentsResponse;
 import com.example.projectboard.dto.security.BoardPrincipal;
@@ -48,7 +47,7 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String article(@PathVariable(value = "articleId") Long articleId, ModelMap map) {
-        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticle(articleId));
+        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));
 
         map.addAttribute("article", article);
         map.addAttribute("articleComments", article.articleCommentsResponse());
@@ -81,20 +80,23 @@ public class ArticleController {
         return "articles/form";
     }
 
-    @PostMapping("/form")
-    public String postNewArticle(
-            @ModelAttribute ArticleRequest request,
-            @AuthenticationPrincipal BoardPrincipal principal) {
-        articleService.saveArticle(request.toDto(principal.toDto()));
+    @GetMapping("/{articleId}/form")
+    public String updateArticleForm(@PathVariable(name = "articleId") Long articleId, ModelMap map) {
+        ArticleResponse article = ArticleResponse.from(articleService.getArticle(articleId));
 
-        return "redirect:/articles";
+        map.addAttribute("article", article);
+        map.addAttribute("formStatus", FormStatus.UPDATE);
+
+        return "articles/form";
     }
 
-    @PostMapping("/{articleId}/form")
-    public String postNewArticle(
-            @PathVariable(name = "articleId") Long articleId, ArticleRequest request,
-            @AuthenticationPrincipal BoardPrincipal principal) {
-        articleService.updateArticle(articleId, request.toDto(principal.toDto()));
+    @PostMapping ("/{articleId}/form")
+    public String updateArticle(
+            @PathVariable(name = "articleId") Long articleId,
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal,
+            ArticleRequest articleRequest
+    ) {
+        articleService.updateArticle(articleId, articleRequest.toDto(boardPrincipal.toDto()));
 
         return "redirect:/articles/" + articleId;
     }

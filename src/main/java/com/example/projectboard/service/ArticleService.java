@@ -3,10 +3,8 @@ package com.example.projectboard.service;
 import com.example.projectboard.domain.Article;
 import com.example.projectboard.domain.constant.SearchType;
 import com.example.projectboard.dto.ArticleDto;
-import com.example.projectboard.dto.ArticleUpdateDto;
 import com.example.projectboard.dto.ArticleWithCommentsDto;
 import com.example.projectboard.repository.ArticleRepository;
-import com.example.projectboard.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -42,10 +39,17 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleWithCommentsDto getArticle(Long articleId) {
+    public ArticleWithCommentsDto getArticleWithComments(Long articleId) {
         return articleRepository.findById(articleId)
                 .map(ArticleWithCommentsDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("Not Exist"));
+    }
+
+    @Transactional(readOnly = true)
+    public ArticleDto getArticle(Long articleId) {
+        return articleRepository.findById(articleId)
+                .map(ArticleDto::from)
+                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
     }
 
     public void saveArticle(ArticleDto dto) {

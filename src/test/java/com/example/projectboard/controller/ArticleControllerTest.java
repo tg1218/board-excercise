@@ -133,7 +133,7 @@ class ArticleControllerTest {
     public void givenNothing_whenRequestArticles_thenReturnArticleSpecificViews() throws Exception {
 
         Long articleId = 1L;
-        given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentsDto());
+        given(articleService.getArticleWithComments(articleId)).willReturn(createArticleWithCommentsDto());
 
         //when & then
         mvc.perform(get("/articles/" + articleId))
@@ -143,7 +143,7 @@ class ArticleControllerTest {
                 .andExpect(model().attributeExists("article"))
                 .andExpect(model().attributeExists("articleComments"));
 
-        then(articleService).should().getArticle(articleId);
+        then(articleService).should().getArticleWithComments(articleId);
     }
 
     @Test
